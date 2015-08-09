@@ -1,0 +1,33 @@
+---
+title: "Practical Machine Learning - Homework assignment"
+author: "Anand Basu"
+date: "August 9, 2015"
+output: html_document
+---
+First read the file into training and testing sets
+
+```{r}
+library(caret);
+library(kernlab);
+df <- read.csv('pml-training.csv');
+dfTest <- read.csv('pml-testing.csv');
+```
+Clean up the #DIV/0! values to be NA
+```{r}
+df[df=='#DIV/0!'] <- NA
+```
+The original training data has `dim(df)[1]` rows.
+Create two subsets of this data - one with the summary rows and the other with all the raw values.
+```{r}
+rawData <- df[df$new_window=='no',]
+summaryData <- df[df$new_window=='yes',]
+```
+We will use the summary data to compute the features of interest and then use the same features in the raw data to train our algorithms.
+The following plot is a distribution of the summary and the raw data to see if any particular class is skewed
+```{r, echo=FALSE}
+plot(summaryData$classe)
+plot(rawData$classe)
+```
+
+Seems like both the A and E classes are slightly higher than others.
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
